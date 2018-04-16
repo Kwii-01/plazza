@@ -5,39 +5,21 @@
 ## Makefile
 ##
 
-CXX	=	g++
-
-DEBUG	=	-g3
-
 RM	=	rm -rf
 
-INC		=	-I./include
+NAME	=	plazza
 
-CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
+all: 
+	make -C ./src/master/cli
+	mv ./src/master/cli/$(NAME) .
 
-NAME		=	plazza
-
-SRCS_GUI	=	src/master/gui/main.cpp		\
-			src/master/gui/Master.cpp
-
-SRCS_CLI	=	src/master/cli/main.cpp		\
-			src/master/cli/Master.cpp
-
-OBJS_GUI	=	$(SRCS_GUI:.cpp=.o)
-
-OBJS_CLI	=	$(SRCS_CLI:.cpp=.o)
-
-all:	$(NAME)
-
-$(NAME): $(OBJS_CLI)
-	$(CXX) $(CXXFLAGS) $(OBJS_CLI) -o $(NAME)
-
-ui:	 $(OBJS_GUI)
-	$(CXX) $(CXXFLAGS) $(OBJS_GUI) -o $(NAME)
+ui: 
+	make -C ./src/master/gui
+	mv ./src/master/gui/$(NAME) .
 
 clean:
-	$(RM) $(OBJS_CLI)
-	$(RM) $(OBJS_GUI)
+	make clean -C ./src/master/cli
+	make clean -C ./src/master/gui
 
 fclean: clean
 	$(RM) $(NAME)
