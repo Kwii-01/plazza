@@ -8,11 +8,26 @@
 #ifndef PLAZZA_HPP_
 	#define PLAZZA_HPP_
 
+#include <string>
+#include <vector>
+
 enum Information
 {
-	PHONE_NUMBER ,
-	EMAIL_ADDRESS ,
+	PHONE_NUMBER,
+	EMAIL_ADDRESS,
 	IP_ADDRESS
+};
+
+struct t_informations
+{
+	std::string str;
+	Information value;
+};
+
+struct s_cmdinfo
+{
+        std::vector<std::string> vector_files;
+        Information info;
 };
 
 #endif /* !PLAZZA_HPP_ */

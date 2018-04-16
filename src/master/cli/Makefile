@@ -18,6 +18,7 @@ CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
 NAME		=	plazza
 
 SRCS	=	main.cpp	\
+		Parser.cpp	\
 		Master.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
