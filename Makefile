@@ -11,31 +11,37 @@ DEBUG	=	-g3
 
 RM	=	rm -rf
 
-CXXFLAGS	+=	-Wall -Wextra -Werror
+INC		=	-I./include
 
-NAME	=	plazza
+CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
 
-SRCS	=	src/main.cpp	\
+NAME		=	plazza
 
-OBJS	=	$(SRCS:.cpp=.o)
+SRCS_GUI	=	src/master/gui/main.cpp		\
+			src/master/gui/Master.cpp
 
-all: $(NAME)
+SRCS_CLI	=	src/master/cli/main.cpp		\
+			src/master/cli/Master.cpp
 
-$(NAME): $(OBJS)
-	$(CXX) $(OBJS) -o $(NAME)
+OBJS_GUI	=	$(SRCS_GUI:.cpp=.o)
 
-ui: $(OBJS)
-	$(CXX) $(OBJS) -o $(NAME) #flag lib graphique
+OBJS_CLI	=	$(SRCS_CLI:.cpp=.o)
 
-debug: $(OBJS)
-	$(CXX) $(DEBUG) $(OBJS) -o $(NAME)
+all:	$(NAME)
+
+$(NAME): $(OBJS_CLI)
+	$(CXX) $(CXXFLAGS) $(OBJS_CLI) -o $(NAME)
+
+ui:	 $(OBJS_GUI)
+	$(CXX) $(CXXFLAGS) $(OBJS_GUI) -o $(NAME)
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJS_CLI)
+	$(RM) $(OBJS_GUI)
 
 fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
 
-.PONY:	all clean fclean re
+.PHONY: all ui clean fclean re
