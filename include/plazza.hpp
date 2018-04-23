@@ -36,6 +36,14 @@ struct s_cmdinfo {
 
 };
 
+struct	t_client
+{
+	pid_t	pid;
+	int	client_fd;
+	bool	working;
+};
+
+
 struct serv_t {
 	int	_server;
 	int	_client;
