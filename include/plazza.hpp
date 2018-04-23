@@ -31,9 +31,8 @@ struct t_informations {
 };
 
 struct s_cmdinfo {
-	std::vector<std::string> vector_files;
-	Information info;
-
+	std::string files;
+	std::vector<Information> vector_info;
 };
 
 struct	t_client
@@ -42,7 +41,6 @@ struct	t_client
 	int	client_fd;
 	bool	working;
 };
-
 
 struct serv_t {
 	int	_server;
