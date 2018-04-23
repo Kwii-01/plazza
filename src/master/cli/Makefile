@@ -11,9 +11,6 @@ DEBUG	=	-g3
 
 RM	=	rm -rf
 
-
-INC		=	-I./../../../include -I../
-
 INC		=	-I./../../../include -I./../../tool -I./../
 
 
@@ -24,7 +21,8 @@ NAME		=	plazza
 SRCS	=	main.cpp	\
 		Master.cpp	\
 		Cli.cpp		\
-		../Server.cpp
+		../Server.cpp	\
+		../../salve/Slave.cpp	\
 
 OBJS	=	$(SRCS:.cpp=.o)
 
