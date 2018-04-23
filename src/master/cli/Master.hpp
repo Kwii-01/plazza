@@ -8,14 +8,18 @@
 #ifndef MASTER_HPP_
 	#define MASTER_HPP_
 
+#include "plazza.hpp"
+
 class	Master
 {
 	public:
-		Master(int threads) : _maxThreads(threads) {}
+		Master(int nbthread) : _data({0, -1, -1, nbthread}) {}
 		~Master();
 		int	exec();
 	private:
-		int	_maxThreads;
+		t_masterinfo	_data;
+
+		void	initServG();
 };
 
 #endif /* !MASTER_HPP_ */
