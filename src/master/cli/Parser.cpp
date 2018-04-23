@@ -22,51 +22,109 @@ static const t_informations infos[] = {
         {"IP_ADDRESS;", IP_ADDRESS}
 };
 
-void Parser::considered_enum(const std::string &substr, const std::string &lastsub)
+int Parser::verif_valid_vector(std::vector<std::string> &vector_commands)
 {
-	if (lastsub[lastsub.length() - 1] == ';')
-		throw (std::invalid_argument("no filename before enum\n"));
-	s_cmdinfo *elem = actions.back();
-	int found_info = 84;
-	for (int i = 0; i < 6; i++) {
-		if (substr == infos[i].str) {
-			elem->info = infos[i].value;
-			found_info = 0;
-			break ;
-		}
+	for (auto line : vector_commands) {
+		int count_words = 0;
+		int place_last = 0;
+
+		for (unsigned int i = 0; i < line.size(); i++) 
+			if (isspace(line[i])) {
+				++count_words;
+				place_last = i;
+			}
+		if (count_words == 0)
+			return 84;
+		std::string last = line.substr(place_last + 1, line.length());
+		int error = 84;
+		for (int i = 0; i < 6; i++)
+			if (last == infos[i].str)
+				error = 0;
+		if (error == 84)
+			return (error);
 	}
-	if (found_info == 84)
-		throw (std::invalid_argument("no such enum\n"));
+	return (0);
 }
 
-void Parser::considered_filename(const std::string &substr)
+void Parser::considered_filename(const std::string &substr, std::string macro)
 {
-	s_cmdinfo *elem = actions.back();
+	for (auto action : actions) {
+		if (action->filename == substr) {
+			int i = 0;
+			for (; i < 6; i++)
+				if (macro == infos[i].str)
+					break ;
+			for (auto information : action->vect_info)
+				if (information == infos[i].value)
+					return ;
+			action->vect_info.push_back(infos[i].value);
+			return ;
+		}
+	}
+	s_cmdinfo *to_add = new(s_cmdinfo);
+	int i = 0;
+	for (; i < 6; i++)
+		if (macro == infos[i].str)
+			break ;
+	to_add->vect_info.push_back(infos[i].value);
+	to_add->filename = substr.substr(0, substr.length());
+	actions.push_back(to_add);
+}
 
-	elem->vector_files.push_back(substr);
+void Parser::fill_action(std::vector<std::string> &vector_commands)
+{
+	for (auto line : vector_commands) {
+		std::string substr;
+		std::istringstream stream(line);
+		while (stream.tellg() != -1) {
+			stream >> substr;
+			if (stream.tellg() != -1)
+				considered_filename(substr, line.substr(line.find_last_of(' ') + 1, line.length()));
+		}
+	}
+}
+
+void Parser::epur_str(std::string &str)
+{
+	bool space = false;
+	auto p = str.begin();
+
+	for (auto ch : str)
+		if (std::isspace(ch))
+			space = p != str.begin();
+		else {
+			if (space) *p++ = ' ';
+			*p++ = ch;
+			space = false;
+		}
+	str.erase(p, str.end());
+}
+
+int Parser::fill_vector_commands(std::vector<std::string> &vector_commands, const std::string &cmdline)
+{
+	int x = 0;
+	int last = 0;
+	std::string cmd;
+
+	while (cmdline[x] && cmdline[x] != '\0') {
+		if (cmdline[x] == ';' || cmdline[x + 1] == '\0') {
+			cmd = cmdline.substr(last, x);
+			epur_str(cmd);
+			last = x + 1;
+			if (cmd != "")
+				vector_commands.push_back(cmd);
+		}
+		++x;
+	}
+	return (verif_valid_vector(vector_commands));
 }
 
 std::vector<s_cmdinfo *> &Parser::run(const std::string &cmdline)
 {
-	std::istringstream stream(cmdline);
-	std::string substr;
-	std::vector<std::string> vector_substr;
+	std::vector<std::string> vector_commands;
 
-	while (stream.tellg() != -1) {
-		stream >> substr;
-		vector_substr.push_back(substr);
-	}
-	actions.push_back(new s_cmdinfo);
-	for (auto iter = vector_substr.begin(); iter != vector_substr.end(); iter++) {
-		std::string str = *iter;
-		if (str[str.length() - 1] == ';' || iter == vector_substr.end() - 1) {
-			if (iter == vector_substr.begin())
-				throw (std::invalid_argument("no filename before first enum\n"));
-			considered_enum(str, *(iter - 1));
-			actions.push_back(new s_cmdinfo);
-		}								 
-		else
-			considered_filename(str);
-	}
-	return actions;
+	if (fill_vector_commands(vector_commands, cmdline) == 84)
+		throw (std::invalid_argument("invalid command line\n"));
+	fill_action(vector_commands);
+	return (actions);
 }
