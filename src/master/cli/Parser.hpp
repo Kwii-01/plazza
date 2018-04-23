@@ -16,7 +16,7 @@ class Parser
 {
 public:
 	Parser();
-	std::vector<s_cmdinfo *> &run(const std::string &cmdline);
+	std::vector<s_cmdinfo *> &run(const std::string);
 private:
 	void considered_enum(const std::string &, const std::string &);
 	void considered_filename(const std::string &);

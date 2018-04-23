@@ -38,4 +38,11 @@ struct s_cmdinfo
         Information info;
 };
 
+struct	t_client
+{
+	pid_t	pid;
+	int	client_fd;
+	bool	working;
+};
+
 #endif /* !PLAZZA_HPP_ */

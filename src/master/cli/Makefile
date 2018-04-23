@@ -11,7 +11,7 @@ DEBUG	=	-g3
 
 RM	=	rm -rf
 
-INC		=	-I./../../../include
+INC		=	-I./../../../include -I../
 
 CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
 

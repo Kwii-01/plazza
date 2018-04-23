@@ -7,6 +7,8 @@
 
 #include <stdlib.h>
 #include "Master.hpp"
+#include "Cli.hpp"
+#include <iostream>
 
 int	main(int ac, char **av)
 {
@@ -18,5 +20,9 @@ int	main(int ac, char **av)
 	if (nbThreads <= 0)
 		return 84;
 	Master	master(nbThreads);
-	return master.exec();
+	master.exec();
+	t_masterinfo	info = {0, 0, 0, 0};
+	Cli	cli(info);
+	cli.Prompt();
+	return 0;
 }
