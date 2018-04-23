@@ -16,7 +16,7 @@ class Parser
 {
 public:
 	Parser();
-	std::vector<s_cmdinfo *> &run(const std::string);
+	std::vector<s_cmdinfo *> &run(const std::string &);
 private:
 	void considered_filename(const std::string &substr, std::string macro);
 	void fill_action(std::vector<std::string> &vector_commands);

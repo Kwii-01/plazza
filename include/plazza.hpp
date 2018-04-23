@@ -31,8 +31,8 @@ struct t_informations {
 };
 
 struct s_cmdinfo {
-	std::string files;
-	std::vector<Information> vector_info;
+	std::string filename;
+	std::vector<Information> vect_info;
 };
 
 struct	t_client
