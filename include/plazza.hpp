@@ -18,24 +18,37 @@ enum Information
 	IP_ADDRESS
 };
 
-struct t_masterinfo
-{
+struct t_masterinfo {
 	unsigned long int	addr;
 	int			socket;
 	int			port;
 	int			maxThreads;
 };
 
-struct t_informations
-{
+struct t_informations {
 	std::string str;
 	Information value;
 };
 
-struct s_cmdinfo
-{
-        std::string filename;
-	std::vector<Information> vect_info;
+struct s_cmdinfo {
+	std::string files;
+	std::vector<Information> vector_info;
 };
+
+struct	t_client
+{
+	pid_t	pid;
+	int	client_fd;
+	bool	working;
+};
+
+struct serv_t {
+	int	_server;
+	int	_client;
+	int	_pid;
+	int	_status;
+};
+
+serv_t	serv_g;
 
 #endif /* !PLAZZA_HPP_ */
