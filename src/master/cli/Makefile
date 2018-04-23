@@ -11,7 +11,7 @@ DEBUG	=	-g3
 
 RM	=	rm -rf
 
-INC		=	-I./../../../include
+INC		=	-I./../../../include -I ../../slave
 
 CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
 
@@ -19,6 +19,7 @@ NAME		=	plazza
 
 SRCS	=	main.cpp	\
 		Parser.cpp	\
+		../../slave/Parse_file.cpp	\
 		Master.cpp	\
 		Cli.cpp
 
