@@ -19,7 +19,8 @@ NAME		=	plazza
 
 SRCS	=	main.cpp	\
 		Parser.cpp	\
-		Master.cpp
+		Master.cpp	\
+		Cli.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 

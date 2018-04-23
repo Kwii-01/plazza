@@ -18,6 +18,14 @@ enum Information
 	IP_ADDRESS
 };
 
+struct t_masterinfo
+{
+	unsigned long int	addr;
+	int			socket;
+	int			port;
+	int			maxThreads;
+};
+
 struct t_informations
 {
 	std::string str;
