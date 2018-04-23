@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2018
+x** EPITECH PROJECT, 2018
 ** plazza
 ** File description:
 ** plazza's header
@@ -34,8 +34,8 @@ struct t_informations
 
 struct s_cmdinfo
 {
-        std::vector<std::string> vector_files;
-        Information info;
+        std::string filename;
+	std::vector<Information> vect_info;
 };
 
 #endif /* !PLAZZA_HPP_ */
