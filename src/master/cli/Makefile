@@ -11,14 +11,15 @@ DEBUG	=	-g3
 
 RM	=	rm -rf
 
-INC		=	-I./../../../include
+INC		=	-I./../../../include -I./../../tool
 
 CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
 
 NAME		=	plazza
 
 SRCS	=	main.cpp	\
-		Master.cpp
+		Master.cpp	\
+		../Server.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 
