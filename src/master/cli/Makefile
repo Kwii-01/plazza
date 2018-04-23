@@ -12,19 +12,19 @@ DEBUG	=	-g3
 RM	=	rm -rf
 
 
-INC		=	-I./../../../include -I../
-
-INC		=	-I./../../../include -I./../../tool -I./../
+#INC		=	-I./../../../include -I./../../tool -I./../
 
 
-CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
+CXXFLAGS	=	-Wall -Wextra -Werror #$(INC)
 
 NAME		=	plazza
 
-SRCS	=	main.cpp	\
-		Master.cpp	\
-		Cli.cpp		\
-		../Server.cpp
+SRCS	=	main.cpp		\
+		Master.cpp		\
+		Cli.cpp			\
+		../SlaveManager.cpp	\
+		../Server.cpp		\
+		Parser.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 

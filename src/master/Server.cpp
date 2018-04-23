@@ -9,7 +9,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
-#include "plazza.hpp"
+#include "../../include/plazza.hpp"
 #include "Server.hpp"
 
 Server::Server()

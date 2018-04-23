@@ -9,9 +9,12 @@
 #include <time.h>
 #include <signal.h>
 #include <unistd.h>
-#include "Master.hpp"
 #include "Cli.hpp"
 #include <iostream>
+//#include "../../../include/plazza.hpp"
+#include "Master.hpp"
+
+serv_t	serv_g({0, 0, 0, 0});
 
 static void	ctrl_c(int)
 {
