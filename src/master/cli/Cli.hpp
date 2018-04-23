@@ -6,13 +6,19 @@
 */
 
 #ifndef CLI_HPP_
-#define CLI_HPP_
+	#define CLI_HPP_
 
 #include "plazza.hpp"
 
-class Cli {
+class Cli
+{
 	public:
-		void	Prompt(t_masterinfo masterinfo);
+		Cli();
+		~Cli();
+		void	mainLoop(t_masterinfo &);
+		std::vector<s_cmdinfo *>	getCmd();
+	private:
+		t_masterinfo	_dataServ;
 };
 
 #endif /* !CLI_HPP_ */

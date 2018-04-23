@@ -5,18 +5,27 @@
 ** source
 */
 
-#include "Cli.hpp"
+#include <iostream>
 #include "Parser.hpp"
 #include "SlaveManager.hpp"
-#include <iostream>
+#include "Cli.hpp"
 
-void    Cli::Prompt(t_masterinfo masterinfo)
+void	Cli::mainLoop(t_masterinfo &data)
 {
-        std::string     input;
-        Parser		parser;
-        SlaveManager    manager(masterinfo);
+	SlaveManager			slv(data);
+	std::vector<s_cmdinfo *>	cmds;
 
-        while (std::getline(std::cin, input)) {
-                manager.Interpret(parser.run(input));
-        }
+	while (serv_g.status != -1) {
+		cmds = getCmd();
+		slv.Interpret(cmds);
+	}
+}
+
+std::vector<s_cmdinfo *>	Cli::getCmd()
+{
+	Parser				pars;
+	std::string			s;
+
+	getline(std::cin, s);
+	return pars.run(s);
 }

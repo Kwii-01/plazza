@@ -8,18 +8,19 @@
 #include <stdlib.h>
 #include <time.h>
 #include <signal.h>
+#include <unistd.h>
 #include "Master.hpp"
 #include "Cli.hpp"
 #include <iostream>
 
-static void	ctrl_c()
+static void	ctrl_c(int)
 {
-	serv_g.status = -1;
-	if (serv_g.pid > 0) {
-		if (serv_g.server >= 0)
-			close(serv_g.server);
-	} else if (serv_g.pid == 0 && serv_g.client >= 0)
-		close(serv_data.client);}
+	serv_g._status = -1;
+	if (serv_g._pid > 0) {
+		if (serv_g._server >= 0)
+			close(serv_g._server);
+	} else if (serv_g._pid == 0 && serv_g._client >= 0)
+		close(serv_g._client);
 	exit(0);
 }
 
@@ -27,10 +28,10 @@ int	main(int ac, char **av)
 {
 	int	nbThreads = 0;
 
-	serv_g.server = -1;
-	serv_g.client = -1;
-	serv_g.status = 0;
-	serv_g.pid = 1;
+	serv_g._server = -1;
+	serv_g._client = -1;
+	serv_g._status = 0;
+	serv_g._pid = 1;
 	signal(SIGINT, ctrl_c);
 	srand(time(NULL));
 	if (ac != 2)
@@ -40,8 +41,5 @@ int	main(int ac, char **av)
 		return 84;
 	Master	master(nbThreads);
 	master.exec();
-	t_masterinfo	info = {0, 0, 0, 0};
-	Cli	cli(info);
-	cli.Prompt();
 	return 0;
 }
