@@ -15,7 +15,7 @@ void	Cli::mainLoop(t_masterinfo &data)
 	SlaveManager			slv(data);
 	std::vector<s_cmdinfo *>	cmds;
 
-	while (serv_g.status != -1) {
+	while (serv_g._status != -1) {
 		cmds = getCmd();
 		slv.Interpret(cmds);
 	}
