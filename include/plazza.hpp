@@ -19,7 +19,7 @@ enum Information
 };
 
 struct t_masterinfo {
-	unsigned long int	addr;
+	uint32_t	addr;
 	int			socket;
 	int			port;
 	int			maxThreads;
@@ -38,7 +38,7 @@ struct s_cmdinfo {
 struct	t_client
 {
 	pid_t	pid;
-	int	client_fd;
+	int	fd;
 	bool	working;
 };
 

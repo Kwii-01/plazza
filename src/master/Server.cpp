@@ -25,7 +25,7 @@ void	Server::createServer(int port)
 		findPort();
 	if (!_pe)
 		throw Err::ServerError("Server creation failed: getprotobyname.");
-	_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, _pe->p_proto);
+	_socket = socket(AF_INET, SOCK_STREAM, _pe->p_proto);
 	if (_socket == -1)
 		throw Err::ServerError("Server creation failed: socket.");
 	bindServer();
@@ -45,11 +45,13 @@ void	Server::closeServer()
 	_port = -1;
 	_addr = 0;
 }
+#include <iostream>
 
 void	Server::findPort() noexcept
 {
 	std::pair<int, int>	p;
 
+	_port = -1;
 	while (_port == -1) {
 		p.first = rand() % 255 + 1;
 		p.second = rand() % 255 + 1;
@@ -70,4 +72,5 @@ void	Server::bindServer()
 		closeServer();
 		throw Err::ServerError("bind failed.");
 	}
+	_addr = inet_addr("127.0.0.1");
 }
