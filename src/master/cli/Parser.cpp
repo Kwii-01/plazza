@@ -124,7 +124,8 @@ std::vector<s_cmdinfo *> &Parser::run(const std::string &cmdline)
 	std::vector<std::string> vector_commands;
 
 	if (fill_vector_commands(vector_commands, cmdline) == 84)
-		throw (std::invalid_argument("invalid command line\n"));
-	fill_action(vector_commands);
+		std::cout << "Invalid command line" << std::endl;
+	else
+		fill_action(vector_commands);
 	return (actions);
 }

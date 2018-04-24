@@ -6,8 +6,8 @@
 */
 
 #include <iostream>
-#include "Server.hpp"
-#include "Error.hpp"
+#include "../Server.hpp"
+#include "../../tool/Error.hpp"
 #include "Cli.hpp"
 #include "Master.hpp"
 

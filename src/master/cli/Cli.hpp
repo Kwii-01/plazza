@@ -8,13 +8,15 @@
 #ifndef CLI_HPP_
 	#define CLI_HPP_
 
-#include "plazza.hpp"
+#include "../../../include/plazza.hpp"
+
+extern serv_t	serv_g;
 
 class Cli
 {
 	public:
-		Cli();
-		~Cli();
+		Cli() {}
+		~Cli() {}
 		void	mainLoop(t_masterinfo &);
 		std::vector<s_cmdinfo *>	getCmd();
 	private:
