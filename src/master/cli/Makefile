@@ -23,7 +23,8 @@ SRCS	=	main.cpp		\
 		../SlaveManager.cpp	\
 		../Server.cpp		\
 		Parser.cpp		\
-		../../slave/Slave.cpp
+		../../slave/Slave.cpp	\
+		../ThreadPool.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 
