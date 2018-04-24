@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "Parser.hpp"
-#include "SlaveManager.hpp"
+#include "../SlaveManager.hpp"
 #include "Cli.hpp"
 
 void	Cli::mainLoop(t_masterinfo &data)
@@ -17,7 +17,7 @@ void	Cli::mainLoop(t_masterinfo &data)
 
 	while (serv_g._status != -1) {
 		cmds = getCmd();
-		slv.Interpret(cmds);
+		slv.Interpret(cmds, data);
 	}
 }
 
