@@ -17,14 +17,15 @@ CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
 
 NAME		=	plazza
 
-SRCS	=	main.cpp		\
-		Master.cpp		\
-		Cli.cpp			\
-		../SlaveManager.cpp	\
-		../Server.cpp		\
-		Parser.cpp		\
-		../../slave/Slave.cpp	\
-#		../../slave/Parse_file.cp
+SRCS	=	main.cpp			\
+		Master.cpp			\
+		Cli.cpp				\
+		../SlaveManager.cpp		\
+		../Server.cpp			\
+		Parser.cpp			\
+		../../slave/Slave.cpp		\
+		../../slave/Parse_file.cpp	 \
+		../ThreadPool.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 
