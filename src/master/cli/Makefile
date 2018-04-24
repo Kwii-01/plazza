@@ -11,7 +11,7 @@ DEBUG	=	-g3
 
 RM	=	rm -rf
 
-INC		=	-I./../../../include -I./../../tool -I./../
+INC		=	-I./../../../include -I./../../tool -I./../ -I ../../slave
 
 CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
 
@@ -24,8 +24,9 @@ SRCS	=	main.cpp		\
 		../Server.cpp		\
 		Parser.cpp		\
 		../../slave/Slave.cpp	\
+    ../../slave/Parse_file.cpp	 \
 		../ThreadPool.cpp
-
+    
 OBJS	=	$(SRCS:.cpp=.o)
 
 all:	$(NAME)
