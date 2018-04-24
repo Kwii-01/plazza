@@ -15,10 +15,13 @@ class Slave
 	public:
 		Slave(t_masterinfo &);
 		~Slave();
-		int	getFd() { return _socket; };
+		int	getServFd() { return _servFd; };
+		int	getSocket() { return _socket; };
+		void	setServFd(int fd) { _servFd = fd; };
+		void	setSocket(int socket) { _socket = socket; };
 	private:
 		int	_socket;
-		int	_fd;
+		int	_servFd;
 };
 
 #endif /* !SLAVE_HPP_ */

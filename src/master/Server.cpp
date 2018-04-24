@@ -9,6 +9,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <iostream>
 #include "../../include/plazza.hpp"
 #include "Server.hpp"
 
@@ -45,7 +46,6 @@ void	Server::closeServer()
 	_port = -1;
 	_addr = 0;
 }
-#include <iostream>
 
 void	Server::findPort() noexcept
 {

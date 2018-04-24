@@ -52,45 +52,28 @@ void	SlaveManager::AssignWorks(t_client &client, s_cmdinfo *info)
 
 #include <string.h>
 
-void    SlaveManager::CreateSlave(s_cmdinfo *, t_masterinfo masterinfo)
+void	SlaveManager::CreateSlave(s_cmdinfo *, t_masterinfo masterinfo)
 {
-	t_client	new_client;
-	struct sockaddr_in	client;
-	socklen_t		size = sizeof(client);
+	int	pid = fork();
+	struct sockaddr_in	s_cl;
+	socklen_t		s_size = sizeof(s_cl);
 
-
-	new_client.pid = fork();
-	if (new_client.pid == 0) {
-		std::cout << "CHildren" << std::endl;
-		//if (new_client.fd == -1)
-		//	throw Err::ServerError("Couldn't accept the client.");
-		std::cout << "Before creating" << std::endl;
-		Slave		new_slave(masterinfo);
-		serv_g._pid = new_client.pid;
-		std::cout << "Create Done" << std::endl;
-		_clients.push_back(new_client);
-		dprintf(new_slave.getFd(), "JE SUIS LE SERVEUR\n");
-
- 		char buff[100];
-		int e = 0;
-		while ((e = read(new_slave.getFd(), buff, 100) < 0));
-		buff[e] = '\0';
-		if (e != 0)
-			printf("kek\n");
-		exit(0);
+	if (pid > 0) {
+		std::cout << "Waiting connexion\n" << std::endl;
+		serv_g._client = accept(serv_g._server, (struct sockaddr *)&s_cl, &s_size);
+		if (serv_g._client == -1)
+			throw Err::ServerError("Couldn't accept the connexion.");
+		std::cout << "Client connected\n" << std::endl;
 	}
-	if (new_client.pid > 0) {
-		std::cout << "Father" << std::endl;
-			new_client.fd = -1;
-		//while (new_client.fd == -1) {
-		//	std::cout << "lol" << std::endl;
-		new_client.fd = accept(serv_g._server, (struct sockaddr *)&client, &size);
-		//}
-		std::cout << "Father" << std::endl;
+	if (pid == 0) {
+		Slave	slave(masterinfo);
+		// EXE C FCNT DU SLAVE
+		close(slave.getSocket());
+		exit(0);
 	}
 }
 
-void    SlaveManager::DeleteSlave()
+void	SlaveManager::DeleteSlave()
 {
 
 }
