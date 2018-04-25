@@ -48,8 +48,11 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		return 84;
 	nbThreads = atoi(av[1]);
-	ThreadPool	oui(nbThreads);
-	
+	ThreadPool	*oui = new ThreadPool(nbThreads);
+	s_cmdinfo *infos = new s_cmdinfo;
+	oui->newInstruction(infos);
+	oui->newInstruction(infos);
+	delete(oui);
 /* 	if (nbThreads <= 0)
 		return 84;
 	Master	master(nbThreads);

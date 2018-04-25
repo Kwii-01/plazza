@@ -26,8 +26,8 @@ SRCS	=	main.cpp			\
 		../Communication.cpp		\
 		../../slave/Slave.cpp		\
 		../../slave/Parse_file.cpp	\
-		../Ipcs.cpp
-		#../ThreadPool.cpp
+		../Ipcs.cpp			\
+		../ThreadPool.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 
