@@ -20,39 +20,39 @@ Parsefiles::Parsefiles()
 
 void Parsefiles::check_if_match(std::string str, int x, int count)
 {
-        int save_x = x;
+	int save_x = x;
 
-        if (x > 0 && str[x - 1] != ' ')
-                return ;
-        for (; str[x]; x++) {
-                if (str[x] == ' ' && str[x - 1] == ' ')
-                        return ;
+	if (x > 0 && str[x - 1] != ' ')
+		return ;
+	for (; str[x]; x++) {
+		if (str[x] == ' ' && str[x - 1] == ' ')
+			return ;
 		else if	(!isdigit(str[x]) && str[x] != ' ')
-                        return ;
-                else if	(isdigit(str[x]))
-                        count++;
-                if (count == 10)
-                        break ;
-        }
-        if (count == 10) {
-                if (str[x + 1] && str[x + 1] != ' ')
-                        return ;
-                for (int new_count = 0; new_count != 10; save_x++) {
-                        std::cout << str[save_x];
-                        if (isdigit(str[save_x]))
-                                new_count++;
-                }
-                std::cout << std::endl;
-        }
+			return ;
+		else if	(isdigit(str[x]))
+			count++;
+		if (count == 10)
+			break ;
+	}
+	if (count == 10) {
+		if (str[x + 1] && str[x + 1] != ' ')
+			return ;
+		for (int new_count = 0; new_count != 10; save_x++) {
+			std::cout << str[save_x];
+			if (isdigit(str[save_x]))
+				new_count++;
+		}
+		std::cout << std::endl;
+	}
 }
 
 void Parsefiles::parse_phone(std::string &line)
 {
 	for (int x = 0; line[x] != '\0'; x++) {
-                if (line[x] == '0' && line[x + 1]) {
-		        check_if_match(line, x, 0);
-                }
-        }
+		if (line[x] == '0' && line[x + 1]) {
+			check_if_match(line, x, 0);
+		}
+	}
 }
 
 void Parsefiles::parse_regex(Information information, std::vector<std::string> &file, int from, int to)

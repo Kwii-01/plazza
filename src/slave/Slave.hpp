@@ -13,8 +13,9 @@
 class Slave
 {
 	public:
-		Slave(t_masterinfo &);
+		Slave();
 		~Slave();
+		int	connectServer(t_masterinfo &);
 		int	getServFd() { return _servFd; };
 		int	getSocket() { return _socket; };
 		void	setServFd(int fd) { _servFd = fd; };
