@@ -14,17 +14,21 @@
 #include <vector>
 #include <deque>
 #include <../../include/plazza.hpp>
+#include "../slave/Parse_file.hpp"
 
 class ThreadPool {
 	public:
 		ThreadPool(int);
 		~ThreadPool();
 	private:
-		static void	toDo(int, ThreadPool *, time_t);
+		static void	toDo(int, ThreadPool *);
 		std::vector<std::thread *>	threads;
 		std::vector<std::mutex *>	mutexes;
+		std::vector<t_threads_info>	vec_threads_info;
 		std::string			str;
 		int				_maxThreads;
+		Parsefiles			parse;
+		bool				_end = false;
 };
 
 #endif /* !THREADPOOL_HPP_ */

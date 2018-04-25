@@ -42,6 +42,7 @@ int	main(int ac, char **av)
 		return 84;
 	nbThreads = atoi(av[1]);
 	ThreadPool	oui(nbThreads);
+	
 /* 	if (nbThreads <= 0)
 		return 84;
 	Master	master(nbThreads);

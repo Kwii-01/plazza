@@ -10,68 +10,48 @@
 #include <unistd.h>
 #include <time.h>
 #include <thread>
-#include 
 
 ThreadPool::ThreadPool(int nbrMaxThreads/* , std::function<void()> pipi */)
 {
-
-//	std::thread type (, );
-//	std::mutex mtx;
 	int i = 0;
-	time_t start = time(NULL);
 	str = "";
-	Parse
-	std::vector<std::string>	new_vector = 
+	std::vector<std::string>	new_vector = parse.open_file("caca.txt");
+
+	vec_threads_info.push_back({0, new_vector, 0,
+	static_cast<int>(new_vector.size() / 2), false});
+	vec_threads_info.push_back({1, new_vector,
+	static_cast<int>((new_vector.size() / 2) + 1),
+	static_cast<int>(new_vector.size()), false});
 	for (int i = 0; i < nbrMaxThreads; ++i) {
 		mutexes.push_back(new std::mutex);
-		threads.push_back(new std::thread(toDo, i, this, start));
+		threads.push_back(new std::thread(toDo, i, this));
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(50));
-//	_maxThreads = nbrMaxThreads;
-/* 	while (std::cin >> str) *//* start + 5 > time(NULL)) *//*  {
-		_maxThreads = nbrMaxThreads;
-		std::cout << "ANATOLE EST UN PD" << std::endl; */
-	//	std::cin >> str;
-//		std::this_thread::sleep_for(std::chrono::milliseconds(50));	
-/* 		std::cout << _maxThreads << std::endl;
-		while (_maxThreads > 0);
-		str = "";
-	} */
- 	for (auto& thread : threads) {
-		std::cout << "Thread's destruction : " << i << std::endl;		 
-		thread->join(/* thread, NULL */);
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	_end = true;
+ 	for (auto &thread : threads) {
+		thread->join();
 		delete(thread);
 		i++;
 	}
+	vec_threads_info.clear();
 	threads.clear();
-/* 	for (int i = 0; i < nbrMaxThreads; ++i) {
-		threads.push_back(new std::thread(toDo, i, this));
-		usleep(500);
-	} */
 }
 
-void ThreadPool::toDo(int caca, ThreadPool *me, time_t start)
+void ThreadPool::toDo(int caca, ThreadPool *me)
 {
-		//std::cout << caca << std::endl;
-//	for (int i = 0; i != 2000; ++i)
-	std::cout << "Thread's creation : " << caca << std::endl;
 	int id = caca;
-	//bool read = false;
-	while (start + 5 > time(NULL)) {
+
+	while (me->_end == false) {
 		me->mutexes[id]->lock();
-		if (me->str != ""/*  && read == false */) {
-		//	std::cout << "The str is full of : " << me->str << std::endl;
-		//	std::cout << "In thread : " << me->_maxThreads << std::endl;		
-		//	me->_maxThreads -= 1;
-		//	std::cout << "In thread : " << me->_maxThreads << std::endl;
-		//	read = true;
+		for (auto thread_info : me->vec_threads_info) {
+			if (id == thread_info.id && thread_info.finish == false) {
+				me->parse.parse_regex(Information::PHONE_NUMBER,
+				thread_info.file, thread_info.start, thread_info.end);
+				thread_info.finish = true;
+				return;				
+			}
 		}
-		/* if (me->str == "")
-			read = false; */
 		me->mutexes[id]->unlock();
-	//s	std::this_thread::sleep_for(std::chrono::milliseconds(50));			
-//		else	
-//			std::cout << "The str is empty." << std::endl;
 	}
 }
 
