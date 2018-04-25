@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-CXX	=	g++
+CXX	=	g++ -g3
 
 DEBUG	=	-g3
 
@@ -17,16 +17,18 @@ CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
 
 NAME		=	plazza
 
-SRCS	=	main.cpp		\
-		Master.cpp		\
-		Cli.cpp			\
-		../SlaveManager.cpp	\
-		../Server.cpp		\
-		Parser.cpp		\
-		../../slave/Slave.cpp	\
-    		../../slave/Parse_file.cpp	 \
-		../ThreadPool.cpp
-    
+SRCS	=	main.cpp			\
+		Master.cpp			\
+		Cli.cpp				\
+		../SlaveManager.cpp		\
+		../Server.cpp			\
+		Parser.cpp			\
+		../Communication.cpp		\
+		../../slave/Slave.cpp		\
+		../../slave/Parse_file.cpp	\
+		../Ipcs.cpp
+		#../ThreadPool.cpp
+
 OBJS	=	$(SRCS:.cpp=.o)
 
 all:	$(NAME)

@@ -47,6 +47,7 @@ struct serv_t {
 	int	_client;
 	int	_pid;
 	int	_status;
+	int	_idMem;
 };
 
 struct t_threads_info {
