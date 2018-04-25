@@ -17,8 +17,13 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
-Slave::Slave(t_masterinfo &data)
+Slave::Slave()
 : _socket(-1), _servFd(-1)
+{
+
+}
+
+int	Slave::connectServer(t_masterinfo &data)
 {
 	struct sockaddr_in	server;
 	struct protoent	*pe = getprotobyname("TCP");
@@ -34,6 +39,7 @@ Slave::Slave(t_masterinfo &data)
 	if (_servFd == -1)
 		throw Err::ServerError("Connec error.");
 	std::cout << "Connected to the server\n" << std::endl;
+	return (_socket);
 }
 
 Slave::~Slave()

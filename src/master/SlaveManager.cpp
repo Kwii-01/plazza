@@ -9,14 +9,17 @@
 #include <iostream>
 #include <sys/types.h>
 #include <unistd.h>
-#include "../slave/Slave.hpp"
 #include <netdb.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include "../tool/Error.hpp"
 #include <unistd.h>
+#include "../slave/Slave.hpp"
+#include "../tool/Error.hpp"
+#include "Communication.hpp"
+#include "Ipcs.hpp"
 #include <stdio.h>
+
 int	SlaveManager::checkFreeToWork()
 {
 	for (std::size_t i = 0; i < _clients.size(); ++i) {
@@ -26,8 +29,7 @@ int	SlaveManager::checkFreeToWork()
 	return -1;
 }
 
-void    SlaveManager::Interpret(std::vector<s_cmdinfo *> &cmd_info,
-t_masterinfo &masterinfo)
+void    SlaveManager::Interpret(std::vector<s_cmdinfo *> &cmd_info, t_masterinfo &masterinfo)
 {
 	int	reassign = -1;
 
@@ -54,6 +56,7 @@ void	SlaveManager::AssignWorks(t_client &client, s_cmdinfo *info)
 
 void	SlaveManager::CreateSlave(s_cmdinfo *, t_masterinfo masterinfo)
 {
+	Slave	slave;
 	int	pid = fork();
 	struct sockaddr_in	s_cl;
 	socklen_t		s_size = sizeof(s_cl);
@@ -63,11 +66,20 @@ void	SlaveManager::CreateSlave(s_cmdinfo *, t_masterinfo masterinfo)
 		serv_g._client = accept(serv_g._server, (struct sockaddr *)&s_cl, &s_size);
 		if (serv_g._client == -1)
 			throw Err::ServerError("Couldn't accept the connexion.");
-		std::cout << "Client connected\n" << std::endl;
+		serv_g._pid = fork();
+		if (serv_g._pid == 0) {
+			while (serv_g._status != -1 && serv_g._client != -1) {
+			//operation entre serv / client
+			}
+			exit(0);
+		} else
+			serv_g._client = -1;
 	}
 	if (pid == 0) {
-		Slave	slave(masterinfo);
-		// EXE C FCNT DU SLAVE
+		serv_g._client = slave.connectServer(masterinfo);
+		while (serv_g._client != -1) {
+		// loop client
+		}
 		close(slave.getSocket());
 		exit(0);
 	}

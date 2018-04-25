@@ -28,6 +28,7 @@ int	Master::exec()
 		//--> execution de la boucle principale
 		Cli	cli;
 		cli.mainLoop(_data);
+		// -----------------------------------/
 		serv.closeServer();
 	} catch (Err::Error &e) {
 		serv.closeServer();

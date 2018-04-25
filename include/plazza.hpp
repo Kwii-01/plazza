@@ -47,6 +47,7 @@ struct serv_t {
 	int	_client;
 	int	_pid;
 	int	_status;
+	int	_idMem;
 };
 
 #endif /* !PLAZZA_HPP_ */
