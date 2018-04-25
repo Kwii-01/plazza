@@ -49,4 +49,11 @@ struct serv_t {
 	int	_status;
 };
 
+struct threads_info {
+	int	id;
+	std::vector<std::string>	file;
+	int	start;
+	int	end;
+}
+
 #endif /* !PLAZZA_HPP_ */

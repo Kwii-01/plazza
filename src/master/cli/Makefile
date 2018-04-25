@@ -11,7 +11,7 @@ DEBUG	=	-g3
 
 RM	=	rm -rf
 
-INC		=	-I./../../../include -I./../../tool -I./../
+INC		=	-I./../../../include -I./../../tool -I./../ -lpthread
 
 CXXFLAGS	=	-Wall -Wextra -Werror $(INC)
 
