@@ -13,37 +13,37 @@
 
 ThreadPool::ThreadPool(int nbrMaxThreads) : _nbrMaxThreads(nbrMaxThreads)
 {
-	int	i = 0;
 	_end = false;
-	std::vector<std::string>	newVector;
 
-	newVector.push_back("");
-	while (i < nbrMaxThreads) {
-		_vecThreadsInfos.push_back(new t_threads_info{i, newVector, 0, 0, true});
-		i++;
-	}
+	_state = "go";
+	mutex = new std::mutex;
+	mutex->unlock();
+	for (int i = 0; i < nbrMaxThreads; ++i)
+		_action.push_back("do nothing");
 	for (int i = 0; i < nbrMaxThreads; ++i) {
-		mutexes.push_back(new std::mutex);
-		threads.push_back(new std::thread(toDo, i, this));
+		auto myLambda = [=]{toDo(this, i);};
+		threads.push_back(new std::thread(myLambda));
 	}
 }
 
-void ThreadPool::toDo(int caca, ThreadPool *me)
+void ThreadPool::toDo(ThreadPool *, int i)
 {
-	int id = caca;
+	int id = i;
 
-	while (me->_end == false) {
-		me->mutexes[id]->lock();
-		for (auto thread_info : me->_vecThreadsInfos) {
-			if (id == thread_info.id && thread_info.finish == false) {
-				std::cout << "false : " << id  << std::endl;				
-				me->_parse.parse_regex(Information::PHONE_NUMBER,
+	while (_state == "go") {
+		while (mutex->try_lock() == 0);
+		if (_action[id] == "do nothing") {
+			mutex->unlock();
+			continue;
+		}
+ 		for (auto thread_info : _vecThreadsInfos) {
+			if (id == thread_info.id && _action[i] == "work") {
+				_parse.parse_regex(Information::PHONE_NUMBER,
 				thread_info.file, thread_info.start, thread_info.end);
-				thread_info.finish = true;
-				return;
+				_action[i] = "do nothing";
 			}
 		}
-		me->mutexes[id]->unlock();
+		mutex->unlock();
 	}
 }
 
@@ -59,13 +59,13 @@ void ThreadPool::divide_by_threads(std::vector<std::string> &new_vector, int nbr
 	while (counter < lines) {
 		_vecThreadsInfos.push_back({x, new_vector, static_cast<int>(counter),
 					static_cast<int>(lines) / nbrmaxthreads
-					+ static_cast<int>(counter), false});
+					+ static_cast<int>(counter)});
 		counter += lines / static_cast<unsigned long int>(nbrmaxthreads);
 		counter += static_cast<unsigned long int>(1);
 		x++;
 	}
 	while (nbrmaxthreads < save_nb) {
-		_vecThreadsInfos.push_back({x, new_vector, 0, 0, true});
+		_vecThreadsInfos.push_back({x, new_vector, 0, 0});
 		x++;
 		nbrmaxthreads++;
 	}
@@ -74,33 +74,15 @@ void ThreadPool::divide_by_threads(std::vector<std::string> &new_vector, int nbr
 void	ThreadPool::newInstruction(s_cmdinfo *)
 {
 	std::vector<std::string>	newVector = _parse.open_file("caca.txt");
-	bool				quit = false;
-	bool				tempQuit;	
 
-	std::cout << "non" << std::endl;
-	divide_by_threads(newVector, _nbrMaxThreads);	
-	while (quit == false) {
-		tempQuit = true;
-		for (auto threadInfos : _vecThreadsInfos) {
-			if (threadInfos.finish == true)
-				/* tempQuit = false; */
-				break;
-		}
-		quit = tempQuit;
-	}
-	for (auto threadInfos : _vecThreadsInfos) {
-		threadInfos.finish = false;
-			/* tempQuit = false; */
-//			break;
-	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	_vecThreadsInfos.erase(_vecThreadsInfos.begin()+_nbrMaxThreads, _vecThreadsInfos.end());
+	divide_by_threads(newVector, _nbrMaxThreads);
+	for (int i = 0; i < _nbrMaxThreads; ++i)
+		_action[i] = "work";
 }
 
 ThreadPool::~ThreadPool()
 {
-	_end = true;
-	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	_state = "finish";
  	for (auto &thread : threads) {
 		thread->join();
 		delete(thread);

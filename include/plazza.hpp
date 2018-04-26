@@ -55,7 +55,6 @@ struct t_threads_info {
 	std::vector<std::string>	file;
 	int	start;
 	int	end;
-	bool	finish;
 };
 
 #endif /* !PLAZZA_HPP_ */
