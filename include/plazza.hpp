@@ -50,4 +50,12 @@ struct serv_t {
 	int	_idMem;
 };
 
+struct t_threads_info {
+	int	id;
+	std::vector<std::string>	file;
+	int	start;
+	int	end;
+	bool	finish;
+};
+
 #endif /* !PLAZZA_HPP_ */

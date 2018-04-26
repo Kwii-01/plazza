@@ -14,6 +14,7 @@
 #include "../Ipcs.hpp"
 //#include "../../../include/plazza.hpp"
 #include "Master.hpp"
+#include "../ThreadPool.hpp"
 
 serv_t	serv_g({0, 0, 0, 0, 0});
 
@@ -47,9 +48,14 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		return 84;
 	nbThreads = atoi(av[1]);
-	if (nbThreads <= 0)
+	ThreadPool	*oui = new ThreadPool(nbThreads);
+	s_cmdinfo *infos = new s_cmdinfo;
+	oui->newInstruction(infos);
+	oui->newInstruction(infos);
+	delete(oui);
+/* 	if (nbThreads <= 0)
 		return 84;
 	Master	master(nbThreads);
-	master.exec();
+	master.exec(); */
 	return 0;
 }
