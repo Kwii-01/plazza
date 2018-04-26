@@ -14,11 +14,12 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <string.h>
 #include "../slave/Slave.hpp"
 #include "../tool/Error.hpp"
 #include "Communication.hpp"
 #include "Ipcs.hpp"
-#include <stdio.h>
+#include "IntSocket.hpp"
 
 int	SlaveManager::checkFreeToWork()
 {
@@ -52,18 +53,17 @@ void	SlaveManager::AssignWorks(t_client &client, s_cmdinfo *info)
 	std::cout << client.working << std::endl;
 }
 
-#include <string.h>
-
 void	SlaveManager::CreateSlave(s_cmdinfo *, t_masterinfo masterinfo)
 {
 	Slave	slave;
+	IntSocket	iSock;
 	int	pid = fork();
 	struct sockaddr_in	s_cl;
 	socklen_t		s_size = sizeof(s_cl);
 
 	if (pid > 0) {
 		std::cout << "Waiting connexion\n" << std::endl;
-		serv_g._client = accept(serv_g._server, (struct sockaddr *)&s_cl, &s_size);
+		serv_g._client = iSock.intAccept(serv_g._server, (struct sockaddr *)&s_cl, &s_size);
 		if (serv_g._client == -1)
 			throw Err::ServerError("Couldn't accept the connexion.");
 		serv_g._pid = fork();
