@@ -107,8 +107,11 @@ int Parser::fill_vector_commands(std::vector<std::string> &vector_commands, cons
 	std::string cmd;
 
 	while (cmdline[x] && cmdline[x] != '\0') {
-		if (cmdline[x] == ';' || cmdline[x] == '\0') {
-			cmd = cmdline.substr(last, x);
+		if (cmdline[x] == ';' || cmdline[x + 1] == '\0') {
+			if (cmdline[x] == ';')
+				cmd = cmdline.substr(last, x);
+			else
+				cmd = cmdline.substr(last, x + 1);
 			epur_str(cmd);
 			last = x + 1;
 			if (cmd != "")
@@ -123,11 +126,9 @@ std::vector<s_cmdinfo *> &Parser::run(const std::string &cmdline)
 {
 	std::vector<std::string> vector_commands;
 
-printf("start parsing\n");
 	if (fill_vector_commands(vector_commands, cmdline) == 84)
 		std::cout << "Invalid command line" << std::endl;
 	else
 		fill_action(vector_commands);
-	std::cout << actions[0]->filename << std::endl;
 	return (actions);
 }
