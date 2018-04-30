@@ -5,6 +5,7 @@
 ** 
 */
 
+#include <iostream>
 #include "Server.hpp"
 #include "SlaveManager.hpp"
 #include "Slave.hpp"

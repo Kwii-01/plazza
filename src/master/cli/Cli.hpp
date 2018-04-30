@@ -18,6 +18,8 @@ class Cli
 		Cli() {}
 		~Cli() {}
 		void	mainLoop(t_masterinfo &);
+	private:
+		void	updateCmd(std::vector<s_cmdinfo *> &, t_masterinfo &);
 		std::vector<s_cmdinfo *>	getCmd();
 };
 
