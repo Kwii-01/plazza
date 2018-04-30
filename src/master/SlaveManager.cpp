@@ -5,20 +5,11 @@
 ** 
 */
 
+#include "Server.hpp"
 #include "SlaveManager.hpp"
-#include <iostream>
-#include <sys/types.h>
-#include <unistd.h>
-#include <netdb.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <string.h>
-#include "../slave/Slave.hpp"
-#include "../tool/Error.hpp"
+#include "Slave.hpp"
+#include "Error.hpp"
 #include "Communication.hpp"
-#include "Ipcs.hpp"
 #include "IntSocket.hpp"
 
 int	SlaveManager::checkFreeToWork()
@@ -38,48 +29,59 @@ void    SlaveManager::Interpret(std::vector<s_cmdinfo *> &cmd_info, t_masterinfo
 		if (!(_clients.empty()))
 			reassign = checkFreeToWork();
 		if (reassign >= 0)
-			AssignWorks(_clients[reassign], info);
+			AssignWorks(_clients[reassign], *info);
 		else
-			CreateSlave(info, masterinfo);
+			CreateSlave(*info, masterinfo);
 	}
 	if (!(cmd_info.empty()))
 		cmd_info.clear();
 }
 
-void	SlaveManager::AssignWorks(t_client &client, s_cmdinfo *info)
+void	SlaveManager::AssignWorks(t_client &client, s_cmdinfo info)
 {
-	std::cout << "Assign" << std::endl;
-	std::cout << info->filename << std::endl;
-	std::cout << client.working << std::endl;
+	IntSocket	iSock;
+	int		i[1];
+
+	if (iSock.intRecv(client.fd, i, sizeof(int), 0) == -1)
+		throw Err::Error("Recv failed!!");
+	if (i[0] == 0 && !client.working) {
+		if (iSock.intSend(client.fd, &info, sizeof(info), 0) == -1)
+			throw Err::Error("Send failed");
+		client.working = true;
+	}
 }
 
-void	SlaveManager::CreateSlave(s_cmdinfo *, t_masterinfo masterinfo)
+void	SlaveManager::checkWhoIsNotWorking()
 {
-	Slave	slave;
 	IntSocket	iSock;
-	int	pid = fork();
-	struct sockaddr_in	s_cl;
-	socklen_t		s_size = sizeof(s_cl);
+	int		i[1];
 
-	if (pid > 0) {
-		std::cout << "Waiting connexion\n" << std::endl;
-		serv_g._client = iSock.intAccept(serv_g._server, (struct sockaddr *)&s_cl, &s_size);
-		if (serv_g._client == -1)
-			throw Err::ServerError("Couldn't accept the connexion.");
-		serv_g._pid = fork();
-		if (serv_g._pid == 0) {
-			while (serv_g._status != -1 && serv_g._client != -1) {
-			//operation entre serv / client
-			}
-			exit(0);
-		} else
-			serv_g._client = -1;
+	for (auto slave : _clients) {
+		iSock.intRecv(slave.fd, i, sizeof(int), 0);
+		if (i[0] == 0)
+			slave.working = false;
 	}
-	if (pid == 0) {
+}
+
+void	SlaveManager::CreateSlave(s_cmdinfo info, t_masterinfo masterinfo)
+{
+	Slave		slave;
+	Server		serv;
+	IntSocket	iSock;
+	t_client	client;
+	serv_g._pid = fork();
+
+	if (serv_g._pid > 0) {
+		serv_g._client = serv.acceptClient(serv_g._server);
+		client.pid = serv_g._pid;
+		client.fd = serv_g._client;
+		client.working = false;
+		AssignWorks(client, info);
+		_clients.push_back(client);
+	}
+	if (serv_g._pid == 0) {
 		serv_g._client = slave.connectServer(masterinfo);
-		while (serv_g._client != -1) {
-		// loop client
-		}
+		slave.run();
 		close(slave.getSocket());
 		exit(0);
 	}

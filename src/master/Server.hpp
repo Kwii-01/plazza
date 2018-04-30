@@ -12,7 +12,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <utility>
-#include "../tool/Error.hpp"
+#include "Error.hpp"
 
 class Server
 {
@@ -20,6 +20,7 @@ class Server
 		Server();
 		~Server() {}
 		void	createServer(int port = 0);
+		int	acceptClient(int);
 		void	closeServer();
 		int	getPort() const noexcept { return _port; }
 		int	getSocket() const noexcept { return _socket; }

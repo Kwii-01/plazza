@@ -8,7 +8,8 @@
 #ifndef SLAVE_HPP_
 	#define SLAVE_HPP_
 
-#include "../../include/plazza.hpp"
+#include "Client.hpp"
+#include "plazza.hpp"
 
 class Slave
 {
@@ -20,9 +21,11 @@ class Slave
 		int	getSocket() { return _socket; };
 		void	setServFd(int fd) { _servFd = fd; };
 		void	setSocket(int socket) { _socket = socket; };
+		void	run();
 	private:
 		int	_socket;
 		int	_servFd;
+		Client	_client;
 };
 
 #endif /* !SLAVE_HPP_ */

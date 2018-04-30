@@ -22,6 +22,9 @@ class IntSocket {
 		int	intClose(int);
 		int	intConnect(int, const struct sockaddr *, socklen_t);
 		int	intAccept(int, struct sockaddr *, socklen_t *);
+		ssize_t intSend(int, const void *, size_t, int);
+		ssize_t intRecv(int, void *, size_t, int);
 };
+
 
 #endif /* !INTSOCKET_HPP_ */

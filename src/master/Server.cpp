@@ -9,8 +9,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
-#include <iostream>
-#include "../../include/plazza.hpp"
+#include "plazza.hpp"
 #include "IntSocket.hpp"
 #include "Server.hpp"
 
@@ -79,4 +78,16 @@ void	Server::bindServer()
 		throw Err::ServerError("bind failed.");
 	}
 	_addr = inet_addr("127.0.0.1");
+}
+
+int	Server::acceptClient(int fd)
+{
+	struct sockaddr_in	s_cl;
+	socklen_t		s_size = sizeof(s_cl);
+	int			clientFd;
+
+	clientFd = iSock.intAccept(fd, (struct sockaddr *)&s_cl, &s_size);
+	if (clientFd == -1)
+		throw Err::ServerError("Couldn't accept the connexion.");
+	return clientFd;
 }
