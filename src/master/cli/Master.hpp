@@ -8,7 +8,7 @@
 #ifndef MASTER_HPP_
 	#define MASTER_HPP_
 
-#include "../../../include/plazza.hpp"
+#include "plazza.hpp"
 
 extern serv_t	serv_g;
 

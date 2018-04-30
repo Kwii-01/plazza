@@ -18,6 +18,7 @@ Master::~Master()
 int	Master::exec()
 {
 	Server	serv;
+
 	try
 	{
 		serv.createServer(0);
@@ -25,10 +26,8 @@ int	Master::exec()
 		_data.addr = serv.getAddr();
 		_data.socket = serv.getSocket();
 		initServG();
-		//--> execution de la boucle principale
 		Cli	cli;
 		cli.mainLoop(_data);
-		// -----------------------------------/
 		serv.closeServer();
 	} catch (Err::Error &e) {
 		serv.closeServer();

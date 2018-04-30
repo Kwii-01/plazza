@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "Parser.hpp"
-#include "../SlaveManager.hpp"
+#include "SlaveManager.hpp"
 #include "Cli.hpp"
 
 void	Cli::mainLoop(t_masterinfo &data)
@@ -23,8 +23,8 @@ void	Cli::mainLoop(t_masterinfo &data)
 
 std::vector<s_cmdinfo *>	Cli::getCmd()
 {
-	Parser				pars;
-	std::string			s;
+	Parser		pars;
+	std::string	s;
 
 	getline(std::cin, s);
 	return pars.run(s);
