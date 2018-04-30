@@ -19,7 +19,6 @@
 #include "IntSocket.hpp"
 
 Slave::Slave()
-: _socket(-1), _servFd(-1)
 {
 
 }
