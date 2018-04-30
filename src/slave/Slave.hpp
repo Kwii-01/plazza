@@ -17,14 +17,10 @@ class Slave
 		Slave();
 		~Slave();
 		int	connectServer(t_masterinfo &);
-		int	getServFd() { return _servFd; };
-		int	getSocket() { return _socket; };
-		void	setServFd(int fd) { _servFd = fd; };
-		void	setSocket(int socket) { _socket = socket; };
+		int	getServFd() { return _client.getSerFd(); };
+		int	getSocket() { return _client.getSocket(); };
 		void	run();
 	private:
-		int	_socket;
-		int	_servFd;
 		Client	_client;
 };
 
