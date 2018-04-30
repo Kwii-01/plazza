@@ -8,7 +8,9 @@
 #ifndef SLAVE_HPP_
 	#define SLAVE_HPP_
 
-#include "../../include/plazza.hpp"
+#include "Client.hpp"
+#include "plazza.hpp"
+#include "ThreadPool.hpp"
 
 class Slave
 {
@@ -16,13 +18,13 @@ class Slave
 		Slave();
 		~Slave();
 		int	connectServer(t_masterinfo &);
-		int	getServFd() { return _servFd; };
-		int	getSocket() { return _socket; };
-		void	setServFd(int fd) { _servFd = fd; };
-		void	setSocket(int socket) { _socket = socket; };
+		int	getServFd() { return _client.getSerFd(); };
+		int	getSocket() { return _client.getSocket(); };
+		void	run();
 	private:
-		int	_socket;
-		int	_servFd;
+		Client		_client;
+		bool		working;
+		ThreadPool	*pool;
 };
 
 #endif /* !SLAVE_HPP_ */

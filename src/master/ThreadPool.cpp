@@ -71,9 +71,9 @@ void ThreadPool::divide_by_threads(std::vector<std::string> &new_vector, int nbr
 	}
 }
 
-void	ThreadPool::newInstruction(s_cmdinfo *)
+void	ThreadPool::newInstruction(s_cmdinfo *infos)
 {
-	std::vector<std::string>	newVector = _parse.open_file("caca.txt");
+	std::vector<std::string>	newVector = _parse.open_file(infos->filename);
 
 	divide_by_threads(newVector, _nbrMaxThreads);
 	for (int i = 0; i < _nbrMaxThreads; ++i)
@@ -85,16 +85,15 @@ bool	ThreadPool::finishWork()
 	bool	exist = true;
 
 	for (int i = 0; i < _nbrMaxThreads; ++i) {
-		if (_action[i] == "work") {
-			
+		if (_action[i] == "work")
 			exist = false;
-		}
 	}
 	return exist;
 }
 
 ThreadPool::~ThreadPool()
 {
+	std::cout << "oui" << std::endl;
 	_state = "finish";
  	for (auto &thread : threads) {
 		thread->join();

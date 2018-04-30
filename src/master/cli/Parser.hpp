@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <iostream>
-#include "../../../include/plazza.hpp"
+#include "plazza.hpp"
 
 class Parser
 {

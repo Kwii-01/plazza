@@ -12,36 +12,52 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <utility>
-#include "../tool/Error.hpp"
-#include "Slave.hpp"
 #include <iostream>
 #include <string.h>
-#include <stdio.h>
-Slave::Slave()
-: _socket(-1), _servFd(-1)
-{
+#include "Slave.hpp"
+#include "IntSocket.hpp"
 
+Slave::Slave()
+{
+	working = false;
 }
 
 int	Slave::connectServer(t_masterinfo &data)
 {
-	struct sockaddr_in	server;
-	struct protoent	*pe = getprotobyname("TCP");
-
-	_socket = socket(AF_INET, SOCK_STREAM, pe->p_proto);
-	if (_socket == -1)
-		throw Err::ServerError("socket problem at creation of the client.");
-	server.sin_family = AF_INET;
-	server.sin_port = htons(data.port);
-	server.sin_addr.s_addr = inet_addr("127.0.0.1");
-	std::cout << "Connecting to the server\n" << std::endl;
-	_servFd = connect(_socket, (struct sockaddr *)&server, sizeof(server));
-	if (_servFd == -1)
-		throw Err::ServerError("Connec error.");
-	std::cout << "Connected to the server\n" << std::endl;
-	return (_socket);
+	return _client.connect(data.port);
 }
 
 Slave::~Slave()
 {
+}
+
+void	Slave::run()
+{
+	int		work[1];
+ 	s_cmdinfo	infos;
+	IntSocket	handleSocket;
+	ThreadPool	threads(2);
+
+	work[0] = 0;
+	handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
+	if (handleSocket.intRecv(_client.getSocket(), &infos, sizeof(infos), 0) == -1)
+		std::cout << "Wut" << std::endl;
+	std::cout <<  "NAME: " << infos.filename << std::endl;
+	working = true;
+	while (1) {
+		if (working) {
+			threads.newInstruction(&infos);
+			work[0] = 1;
+			while (pool->finishWork() == false) {
+				handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
+			}
+			working = false;
+		} else {
+			work[0] = 0;
+			handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
+			handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
+			handleSocket.intRecv(_client.getSocket(), &infos, sizeof(infos), 0);
+			working = true;
+		}
+	}
 }
