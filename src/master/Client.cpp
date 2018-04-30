@@ -5,6 +5,16 @@
 ** client
 */
 
+#include <sys/types.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <utility>
+#include <iostream>
+#include <string.h>
+#include "Error.hpp"
 #include "Client.hpp"
 
 Client::Client()
@@ -27,8 +37,8 @@ int	Client::connect(int port)
 	server.sin_family = AF_INET;
 	server.sin_port = htons(port);
 	server.sin_addr.s_addr = inet_addr("127.0.0.1");
-	_servFd = iSock.intConnect(_socket, (struct sockaddr *)&server, sizeof(server));
-	if (_servFd == -1)
+	_serFd = iSock.intConnect(_socket, (struct sockaddr *)&server, sizeof(server));
+	if (_serFd == -1)
 		throw Err::ServerError("Connec error.");
 	return (_socket);
 }

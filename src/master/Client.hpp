@@ -9,7 +9,7 @@
 	#define CLIENT_HPP_
 
 #include "IntSocket.hpp"
-#include "Plazza.hpp"
+#include "plazza.hpp"
 
 class Client {
 	public:
@@ -17,7 +17,7 @@ class Client {
 		~Client();
 		int	connect(int);
 		int	getSocket() { return _socket; }
-		int	getServFd() { return _serFd; }
+		int	getSerFd() { return _serFd; }
 	private:
 		int	_socket;
 		int	_serFd;

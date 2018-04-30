@@ -5,11 +5,11 @@
 ** 
 */
 
+#include <iostream>
 #include "Server.hpp"
 #include "SlaveManager.hpp"
 #include "Slave.hpp"
 #include "Error.hpp"
-#include "Communication.hpp"
 #include "IntSocket.hpp"
 
 int	SlaveManager::checkFreeToWork()
@@ -37,14 +37,15 @@ void    SlaveManager::Interpret(std::vector<s_cmdinfo *> &cmd_info, t_masterinfo
 		cmd_info.clear();
 }
 
-void	SlaveManager::AssignWorks(t_client &client, s_cmdinfo info)
+void	SlaveManager::AssignWorks(t_client client, s_cmdinfo &info)
 {
 	IntSocket	iSock;
 	int		i[1];
 
-	if (iSock.intRecv(client.fd, i, sizeof(int), 0) == -1)
+	if (iSock.intRecv(client.fd, i, sizeof(i), 0) == -1)
 		throw Err::Error("Recv failed!!");
 	if (i[0] == 0 && !client.working) {
+		std::cout << "JAI RECU" << std::endl;
 		if (iSock.intSend(client.fd, &info, sizeof(info), 0) == -1)
 			throw Err::Error("Send failed");
 		client.working = true;
