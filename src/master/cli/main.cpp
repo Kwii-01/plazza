@@ -12,7 +12,7 @@
 #include "Cli.hpp"
 #include <iostream>
 #include "Master.hpp"
-//#include "../ThreadPool.hpp"
+#include "../ThreadPool.hpp"
 
 serv_t	serv_g({0, 0, 0, 0, 0});
 
@@ -36,11 +36,14 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		return 84;
 	nbThreads = atoi(av[1]);
-	/*ThreadPool	*oui = new ThreadPool(nbThreads);
-	s_cmdinfo *infos = new s_cmdinfo;
-	oui->newInstruction(infos);
-	oui->newInstruction(infos);
-	delete(oui);*/
+ 	if (nbThreads <= 0)
+		return 84;
+ 	/* ThreadPool	threads(nbThreads);
+	s_cmdinfo *infos = new s_cmdinfo;	
+	threads.newInstruction(infos);
+	while (threads.finishWork() == false);  */
+/* 	Master	master(nbThreads);
+	master.exec(); */
  	if (nbThreads <= 0)
 		return 84;
 	Master	master(nbThreads);

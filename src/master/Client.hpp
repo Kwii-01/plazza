@@ -9,7 +9,7 @@
 	#define CLIENT_HPP_
 
 #include "IntSocket.hpp"
-#include "Plazza.hpp"
+#include "plazza.hpp"
 
 class Client {
 	public:
