@@ -15,7 +15,9 @@ class Client {
 	public:
 		Client();
 		~Client();
-		int	connect(int)
+		int	connect(int);
+		int	getSocket() { return _socket; }
+		int	getSerFd() { return _serFd; }
 	private:
 		int	_socket;
 		int	_serFd;
