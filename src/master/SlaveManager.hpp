@@ -8,7 +8,7 @@
 #ifndef SLAVEMANAGER_HPP_
 	#define SLAVEMANAGER_HPP_
 
-#include "../../include/plazza.hpp"
+#include "plazza.hpp"
 
 extern serv_t	serv_g;
 
@@ -18,9 +18,10 @@ class SlaveManager {
 		void	Interpret(std::vector<s_cmdinfo *> &, t_masterinfo &);
 	private:
 		int	checkFreeToWork();
-		void	CreateSlave(s_cmdinfo *info, t_masterinfo);
+		void	checkWhoIsNotWorking();
+		void	CreateSlave(s_cmdinfo info, t_masterinfo);
 		void	DeleteSlave();
-		void	AssignWorks(t_client &, s_cmdinfo *);
+		void	AssignWorks(t_client &, s_cmdinfo);
 		std::vector<t_client>	_clients;
 		t_masterinfo		_masterinfo;
 };

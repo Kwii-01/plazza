@@ -36,3 +36,14 @@ int	IntSocket::intAccept(int fd, struct sockaddr *addr, socklen_t *addrlen)
 {
 	return accept(fd, addr, addrlen);
 }
+
+ssize_t	IntSocket::intSend(int sockfd, const void *buf, size_t len, int flags)
+{
+	return send(sockfd, buf, len, flags);
+}
+
+ssize_t	IntSocket::intRecv(int sockfd, void *buf, size_t len, int flags)
+{
+	return recv(sockfd, buf, len, flags);
+}
+
