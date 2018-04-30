@@ -85,6 +85,7 @@ int	Server::acceptClient(int fd)
 	struct sockaddr_in	s_cl;
 	socklen_t		s_size = sizeof(s_cl);
 	int			clientFd;
+	IntSocket		iSock;
 
 	clientFd = iSock.intAccept(fd, (struct sockaddr *)&s_cl, &s_size);
 	if (clientFd == -1)
