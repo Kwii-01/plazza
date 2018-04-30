@@ -20,7 +20,8 @@ class ThreadPool {
 	public:
 		ThreadPool(int);
 		~ThreadPool();
-		void		newInstruction(s_cmdinfo *);
+		void	newInstruction(s_cmdinfo *);
+		bool	finishWork();
 	private:
 		void		divide_by_threads(std::vector<std::string> &, int);
 		void	toDo(ThreadPool *, int);

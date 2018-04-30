@@ -50,7 +50,11 @@ int	main(int ac, char **av)
 	nbThreads = atoi(av[1]);
  	if (nbThreads <= 0)
 		return 84;
-	Master	master(nbThreads);
-	master.exec();
+	ThreadPool	threads(nbThreads);
+	s_cmdinfo *infos = new s_cmdinfo;	
+	threads.newInstruction(infos);
+	while (threads.finishWork() == false);
+/* 	Master	master(nbThreads);
+	master.exec(); */
 	return 0;
 }

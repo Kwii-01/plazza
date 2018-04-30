@@ -80,6 +80,19 @@ void	ThreadPool::newInstruction(s_cmdinfo *)
 		_action[i] = "work";
 }
 
+bool	ThreadPool::finishWork()
+{
+	bool	exist = true;
+
+	for (int i = 0; i < _nbrMaxThreads; ++i) {
+		if (_action[i] == "work") {
+			
+			exist = false;
+		}
+	}
+	return exist;
+}
+
 ThreadPool::~ThreadPool()
 {
 	_state = "finish";
