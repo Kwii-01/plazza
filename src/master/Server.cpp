@@ -10,6 +10,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include "plazza.hpp"
+#include <iostream>
 #include "IntSocket.hpp"
 #include "Server.hpp"
 

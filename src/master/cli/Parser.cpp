@@ -54,9 +54,6 @@ void Parser::considered_filename(const std::string &substr, std::string macro)
 			for (; i < 6; i++)
 				if (macro == infos[i].str)
 					break ;
-			for (auto information : action->vect_info)
-				if (information == infos[i].value)
-					return ;
 			action->vect_info.push_back(infos[i].value);
 			return ;
 		}
@@ -109,9 +106,9 @@ int Parser::fill_vector_commands(std::vector<std::string> &vector_commands, cons
 	while (cmdline[x] && cmdline[x] != '\0') {
 		if (cmdline[x] == ';' || cmdline[x + 1] == '\0') {
 			if (cmdline[x] == ';')
-				cmd = cmdline.substr(last, x);
+				cmd = cmdline.substr(last, x - last);
 			else
-				cmd = cmdline.substr(last, x + 1);
+				cmd = cmdline.substr(last, (x + 1) - last);
 			epur_str(cmd);
 			last = x + 1;
 			if (cmd != "")
@@ -130,5 +127,12 @@ std::vector<s_cmdinfo *> &Parser::run(const std::string &cmdline)
 		std::cout << "Invalid command line" << std::endl;
 	else
 		fill_action(vector_commands);
+	/*for (auto i : actions) {
+		std::cout << i->filename << std::endl;
+		for (auto k : i->vect_info)
+			std::cout << k << " ";
+		std::cout << std::endl;
+	}
+	std::cout << "end parsing" << std::endl;*/
 	return (actions);
 }
