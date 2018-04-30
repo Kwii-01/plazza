@@ -10,6 +10,7 @@
 
 #include "Client.hpp"
 #include "plazza.hpp"
+#include "ThreadPool.hpp"
 
 class Slave
 {
@@ -21,7 +22,9 @@ class Slave
 		int	getSocket() { return _client.getSocket(); };
 		void	run();
 	private:
-		Client	_client;
+		Client		_client;
+		bool		working;
+		ThreadPool	*pool;
 };
 
 #endif /* !SLAVE_HPP_ */

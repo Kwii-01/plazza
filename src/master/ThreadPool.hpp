@@ -20,16 +20,19 @@ class ThreadPool {
 	public:
 		ThreadPool(int);
 		~ThreadPool();
-		void		newInstruction(s_cmdinfo *);
+		void	newInstruction(s_cmdinfo *);
+		bool	finishWork();
 	private:
-		void		divide_by_threads(std::vector<std::string> &new_vector, int nbrMaxThreads);
-		static void	toDo(int, ThreadPool *);
+		void		divide_by_threads(std::vector<std::string> &, int);
+		void	toDo(ThreadPool *, int);
 		std::vector<std::thread *>	threads;
-		std::vector<std::mutex *>	mutexes;
-		std::vector<t_threads_info *>	_vecThreadsInfos;
+		std::mutex	 		*mutex;
+		std::vector<t_threads_info>	_vecThreadsInfos;
 		Parsefiles			_parse;
 		bool				_end;
 		int				_nbrMaxThreads;
+		std::string			_state;
+		std::vector<std::string>	_action;
 };
 
 #endif /* !THREADPOOL_HPP_ */

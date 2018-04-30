@@ -21,7 +21,7 @@ class SlaveManager {
 		void	checkWhoIsNotWorking();
 		void	CreateSlave(s_cmdinfo info, t_masterinfo);
 		void	DeleteSlave();
-		void	AssignWorks(t_client , s_cmdinfo &);
+		void	AssignWorks(t_client &, s_cmdinfo &);
 		std::vector<t_client>	_clients;
 		t_masterinfo		_masterinfo;
 };
