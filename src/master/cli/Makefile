@@ -27,7 +27,8 @@ SRCS	=	main.cpp			\
 		../../slave/Parse_file.cpp	\
 		../IntSocket.cpp		\
 		../ThreadPool.cpp		\
-		../Client.cpp
+		../Client.cpp			\
+		../../slave/Timer.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 

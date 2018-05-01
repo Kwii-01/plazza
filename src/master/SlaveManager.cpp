@@ -25,6 +25,7 @@ void    SlaveManager::Interpret(std::vector<s_cmdinfo *> &cmd_info, t_masterinfo
 {
 	int	reassign = -1;
 
+	checkWhoIsNotWorking();
 	for (auto info : cmd_info) {
 		if (!(_clients.empty()))
 			reassign = checkFreeToWork();
@@ -45,7 +46,6 @@ void	SlaveManager::AssignWorks(t_client &client, s_cmdinfo &info)
 	if (iSock.intRecv(client.fd, i, sizeof(i), 0) == -1)
 		throw Err::Error("Recv failed!!");
 	if (i[0] == 0 && !client.working) {
-		std::cout << info.filename << std::endl;
 		if (iSock.intSend(client.fd, &info, sizeof(info), 0) == -1)
 			throw Err::Error("Send failed");
 		client.working = true;

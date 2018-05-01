@@ -22,14 +22,17 @@ class ThreadPool {
 		~ThreadPool();
 		void	newInstruction(s_cmdinfo *);
 		bool	finishWork();
+		void	emptyVec() {
+			_vecThreadsInfos.empty();
+		}
 	private:
-		void		divide_by_threads(std::vector<std::string> &, int);
+		void		divide_by_threads(std::vector<std::string> &,
+		int, s_cmdinfo *infos);
 		void	toDo(ThreadPool *, int);
 		std::vector<std::thread *>	threads;
 		std::mutex	 		*mutex;
 		std::vector<t_threads_info>	_vecThreadsInfos;
 		Parsefiles			_parse;
-		bool				_end;
 		int				_nbrMaxThreads;
 		std::string			_state;
 		std::vector<std::string>	_action;

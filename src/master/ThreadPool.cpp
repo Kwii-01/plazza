@@ -13,8 +13,6 @@
 
 ThreadPool::ThreadPool(int nbrMaxThreads) : _nbrMaxThreads(nbrMaxThreads)
 {
-	_end = false;
-
 	_state = "go";
 	mutex = new std::mutex;
 	mutex->unlock();
@@ -38,7 +36,7 @@ void ThreadPool::toDo(ThreadPool *, int i)
 		}
  		for (auto thread_info : _vecThreadsInfos) {
 			if (id == thread_info.id && _action[i] == "work") {
-				_parse.parse_regex(Information::PHONE_NUMBER,
+				_parse.parse_regex(thread_info.value,
 				thread_info.file, thread_info.start, thread_info.end);
 				_action[i] = "do nothing";
 			}
@@ -47,11 +45,11 @@ void ThreadPool::toDo(ThreadPool *, int i)
 	}
 }
 
-void ThreadPool::divide_by_threads(std::vector<std::string> &new_vector, int nbrmaxthreads)
+void ThreadPool::divide_by_threads(std::vector<std::string> &new_vector,
+int nbrmaxthreads, s_cmdinfo *infos)
 {
 	unsigned long int lines = new_vector.size();
 	unsigned long int counter = 0;
-	int save_nb = nbrmaxthreads;
 	int x = 0;
 
 	if (static_cast<int>(lines) < nbrmaxthreads)
@@ -59,15 +57,10 @@ void ThreadPool::divide_by_threads(std::vector<std::string> &new_vector, int nbr
 	while (counter < lines) {
 		_vecThreadsInfos.push_back({x, new_vector, static_cast<int>(counter),
 					static_cast<int>(lines) / nbrmaxthreads
-					+ static_cast<int>(counter)});
+					+ static_cast<int>(counter), infos->vect_info[0]});
 		counter += lines / static_cast<unsigned long int>(nbrmaxthreads);
 		counter += static_cast<unsigned long int>(1);
 		x++;
-	}
-	while (nbrmaxthreads < save_nb) {
-		_vecThreadsInfos.push_back({x, new_vector, 0, 0});
-		x++;
-		nbrmaxthreads++;
 	}
 }
 
@@ -75,8 +68,9 @@ void	ThreadPool::newInstruction(s_cmdinfo *infos)
 {
 	std::vector<std::string>	newVector = _parse.open_file(infos->filename);
 
-	divide_by_threads(newVector, _nbrMaxThreads);
-	for (int i = 0; i < _nbrMaxThreads; ++i)
+
+	divide_by_threads(newVector, _nbrMaxThreads, infos);
+	for (std::size_t i = 0; i < _vecThreadsInfos.size(); ++i)
 		_action[i] = "work";
 }
 
@@ -93,11 +87,11 @@ bool	ThreadPool::finishWork()
 
 ThreadPool::~ThreadPool()
 {
-	std::cout << "oui" << std::endl;
+	std::cout << "oyui" << std::endl;
 	_state = "finish";
- 	for (auto &thread : threads) {
+ 	for (auto &thread : threads)// {
 		thread->join();
-		delete(thread);
-	}
+	//	delete(thread);
+//	}
 	threads.clear();
 }
