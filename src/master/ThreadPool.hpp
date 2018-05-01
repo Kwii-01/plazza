@@ -20,14 +20,14 @@ class ThreadPool {
 	public:
 		ThreadPool(int);
 		~ThreadPool();
-		void	newInstruction(s_cmdinfo *);
+		void	newInstruction(s_cmdinfo *, int);
 		bool	finishWork();
 		void	emptyVec() {
-			_vecThreadsInfos.empty();
+			_vecThreadsInfos.clear();
 		}
 	private:
 		void		divide_by_threads(std::vector<std::string> &,
-		int, s_cmdinfo *infos);
+		s_cmdinfo *, int);
 		void	toDo(ThreadPool *, int);
 		std::vector<std::thread *>	threads;
 		std::mutex	 		*mutex;

@@ -77,14 +77,17 @@ void	Slave::run()
 	while (1) {
 		if (_working) {
 	//		_timer->setCheck(false);
-			threads.newInstruction(&infos);
-			work[0] = 1;
-			while (threads.finishWork() == false)
-				handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
-//			_timer->setCheck(true);
-			//s_statu = "check true";
-			threads.emptyVec();
-			_working = false;
+			for (;infos.vect_info.size() > 0;) {
+				threads.newInstruction(&infos, 0);
+				work[0] = 1;
+				while (threads.finishWork() == false)
+					handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
+//				_timer->setCheck(true);
+				//s_statu = "check true";
+				threads.emptyVec();
+				_working = false;
+				infos.vect_info.erase(infos.vect_info.begin());
+			}
 		} else {
 			work[0] = 0;
 			handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
