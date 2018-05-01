@@ -51,10 +51,11 @@ struct serv_t {
 };
 
 struct t_threads_info {
-	int	id;
+	int				id;
 	std::vector<std::string>	file;
-	int	start;
-	int	end;
+	int				start;
+	int				end;
+	Information			value;	
 };
 
 #endif /* !PLAZZA_HPP_ */
