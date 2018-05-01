@@ -12,7 +12,7 @@
 
 void	Cli::mainLoop(t_masterinfo &data)
 {
-	SlaveManager			slv(data);
+	SlaveManager			slv(data, 0);
 	std::vector<s_cmdinfo *>	cmds;
 
 	while (serv_g._status != -1) {

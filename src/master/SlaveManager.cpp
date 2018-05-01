@@ -71,7 +71,6 @@ void	SlaveManager::CreateSlave(s_cmdinfo info, t_masterinfo masterinfo)
 	IntSocket	iSock;
 	t_client	client;
 	serv_g._pid = fork();
-
 	if (serv_g._pid > 0) {
 		serv_g._client = serv.acceptClient(serv_g._server);
 		client.pid = serv_g._pid;

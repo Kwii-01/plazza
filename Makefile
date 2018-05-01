@@ -24,6 +24,8 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 
+reui : fclean ui
+
 re: fclean all
 
 .PHONY: all ui clean fclean re
