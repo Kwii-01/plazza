@@ -45,9 +45,9 @@ void ThreadPool::toDo(ThreadPool *, int i)
 	}
 }
 
-void ThreadPool::divide_by_threads(std::vector<std::string> &new_vector,
-int nbrmaxthreads, s_cmdinfo *infos)
+void ThreadPool::divide_by_threads(std::vector<std::string> &new_vector, s_cmdinfo *infos, int i)
 {
+	int nbrmaxthreads = _nbrMaxThreads;
 	unsigned long int lines = new_vector.size();
 	unsigned long int counter = 0;
 	int x = 0;
@@ -57,19 +57,18 @@ int nbrmaxthreads, s_cmdinfo *infos)
 	while (counter < lines) {
 		_vecThreadsInfos.push_back({x, new_vector, static_cast<int>(counter),
 					static_cast<int>(lines) / nbrmaxthreads
-					+ static_cast<int>(counter), infos->vect_info[0]});
+					+ static_cast<int>(counter), infos->vect_info[i]});
 		counter += lines / static_cast<unsigned long int>(nbrmaxthreads);
 		counter += static_cast<unsigned long int>(1);
 		x++;
 	}
 }
 
-void	ThreadPool::newInstruction(s_cmdinfo *infos)
+void	ThreadPool::newInstruction(s_cmdinfo *infos, int i)
 {
 	std::vector<std::string>	newVector = _parse.open_file(infos->filename);
 
-
-	divide_by_threads(newVector, _nbrMaxThreads, infos);
+	divide_by_threads(newVector, infos, i);
 	for (std::size_t i = 0; i < _vecThreadsInfos.size(); ++i)
 		_action[i] = "work";
 }
