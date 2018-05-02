@@ -70,7 +70,7 @@ void Parsefiles::parse_regex(Information information, std::vector<std::string> &
 			if (information == EMAIL_ADDRESS)
 				substr = "[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+";
 			else if (information == IP_ADDRESS)
-				substr = "[0-255].[0-255].[0-255].[0-255]";
+				substr = "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}";
 			std::regex regex(substr.c_str());
 			while (stream.tellg() != -1) {
 				stream >>substr;
