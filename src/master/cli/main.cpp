@@ -46,7 +46,7 @@ int	main(int ac, char **av)
 	master.exec(); */
  	if (nbThreads <= 0)
 		return 84;
-	Master	master(nbThreads);
+	Master	master(nbThreads, false);
 	master.exec();
 	return 0;
 }

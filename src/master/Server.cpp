@@ -15,7 +15,7 @@
 #include "Server.hpp"
 
 Server::Server()
-: _pe(getprotobyname("TCP")), _port(-1), _socket(-1), _addr(0)
+	: _pe(getprotobyname("TCP")), _port(-1), _socket(-1), _addr(0)
 {
 
 }

@@ -15,11 +15,12 @@ extern serv_t	serv_g;
 class	Master
 {
 	public:
-		Master(int nbthread) : _data({0, -1, -1, nbthread}) {}
+	Master(int nbthread, int gui) : _data({0, -1, -1, nbthread}), _gui(gui) {}
 		~Master();
 		int	exec();
 	private:
 		t_masterinfo	_data;
+		int _gui;
 
 		void	initServG();
 };
