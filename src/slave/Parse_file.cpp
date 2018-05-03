@@ -46,13 +46,12 @@ void Parsefiles::check_if_match(std::string str, int x, int count)
 	}
 }
 
-void Parsefiles::parse_phone(std::string &line)
+void Parsefiles::parse_phone(std::string &s)
 {
-	for (int x = 0; line[x] != '\0'; x++) {
-		if (line[x] == '0' && line[x + 1]) {
-			check_if_match(line, x, 0);
-		}
-	}
+	std::ofstream out;
+
+	 out.open("log", std::ios::app);
+	 out << s << "\n";
 }
 
 void Parsefiles::parse_regex(Information information, std::vector<std::string> &file, int from, int to)
@@ -64,19 +63,20 @@ void Parsefiles::parse_regex(Information information, std::vector<std::string> &
 		if (current - 1 < from || current - 1 > to)
 			continue ;
 		if (information == PHONE_NUMBER)
-			parse_phone(line);
-		else {
-			std::istringstream stream(line);
-			if (information == EMAIL_ADDRESS)
-				substr = "[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+";
-			else if (information == IP_ADDRESS)
-				substr = "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}";
-			std::regex regex(substr.c_str());
-			while (stream.tellg() != -1) {
-				stream >>substr;
-				if (std::regex_match(substr, regex) == 1)
-					std::cout << substr << std::endl;
-			}
+			substr = "(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}";
+		else if (information == EMAIL_ADDRESS)
+			substr = "(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+";
+		else if (information == IP_ADDRESS)
+			substr = "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}";
+		std::regex words_regex(substr.c_str());
+		auto words_begin =
+			std::sregex_iterator(line.begin(), line.end(), words_regex);
+		auto words_end = std::sregex_iterator();
+		for (std::sregex_iterator i = words_begin; i != words_end; ++i) {
+			std::smatch match = *i;
+			std::string match_str = match.str();
+			std::cout << match_str << '\n';
+			parse_phone(match_str);
 		}
 	}
 }

@@ -16,7 +16,7 @@
 #include <string.h>
 #include "Slave.hpp"
 #include "IntSocket.hpp"
-#include <future>
+#include <thread>
 
 Slave::Slave()
 {
@@ -63,6 +63,22 @@ Slave::~Slave()
 {
 }
 
+void timer(char *is_finished)
+{
+	time_t this_time;
+	time_t last_time;
+	time(&this_time);
+	last_time = this_time;
+	while (true) {
+		time(&this_time);
+		if (difftime(this_time, last_time) > 5.0f) {
+			is_finished[0] = 'y';
+			std::cout << "5 sc\n";
+			return ;
+		}
+	}
+}
+
 void	Slave::run()
 {
 	int		work[1];
@@ -74,9 +90,13 @@ void	Slave::run()
 	handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
 	handleSocket.intRecv(_client.getSocket(), &infos, sizeof(infos), 0);
 	_working = true;
+	char str[2];
+	str[0] = 'n';
+	str[1] = '\0';
+	std::thread thread(timer, str);
 	while (1) {
 		if (_working) {
-	//		_timer->setCheck(false);
+			//		_timer->setCheck(false);
 			for (;infos.vect_info.size() > 0;) {
 				threads.newInstruction(&infos, 0);
 				work[0] = 1;
@@ -89,11 +109,20 @@ void	Slave::run()
 				infos.vect_info.erase(infos.vect_info.begin());
 			}
 		} else {
+			std::cout << "else " << str << std::endl;
+			if (str[0] == 'y') {
+				if (close(_client.getSocket()) == -1)
+					std::cerr << "problème close" << std::endl;
+				else
+					std::cout << "end close " << std::endl;
+				exit(0); 
+			}
 			work[0] = 0;
 			handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
 			handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
 			handleSocket.intRecv(_client.getSocket(), &infos, sizeof(infos), 0);
 			_working = true;
 		}
+		std::cout << "lopp" << str << std::endl;
 	}
 }

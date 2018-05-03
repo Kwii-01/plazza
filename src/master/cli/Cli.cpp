@@ -5,6 +5,7 @@
 ** source
 */
 
+#include <thread>
 #include <iostream>
 #include "Parser.hpp"
 #include "SlaveManager.hpp"
@@ -48,5 +49,9 @@ std::vector<s_cmdinfo *>	Cli::getCmd()
 	std::string	s;
 
 	getline(std::cin, s);
+	if (s == "") {
+		//std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		exit(0);
+	}
 	return pars.run(s);
 }
