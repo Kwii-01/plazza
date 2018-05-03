@@ -111,8 +111,9 @@ int Parser::fill_vector_commands(std::vector<std::string> &vector_commands, cons
 				cmd = cmdline.substr(last, (x + 1) - last);
 			epur_str(cmd);
 			last = x + 1;
-			if (cmd != "")
+			if (cmd != "") {
 				vector_commands.push_back(cmd);
+			}
 		}
 		++x;
 	}

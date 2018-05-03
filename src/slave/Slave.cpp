@@ -31,27 +31,7 @@ Slave::Slave()
 
 void	Slave::timerFunc(Slave *)
 {
-	//promObj->set_value(35);
-
-// 	std::cout << "statu = " << _statu << std::endl;
-//	while (_timer->checkTimer() == false);
-//	std::cout << "oui" << std::endl;
-/*	 {
-		_mutex->lock();
-		std::cout << _statu << std::endl;
-		if (_statu == "check true") {
-			std::cout << "non" << std::endl;
-			_timer->setCheck(true);
-		}
-		_mutex->unlock();
-	} */
-/* 	std::cout << "close" << std::endl;
-	if (close(_client.getSocket()) == -1)
-		std::cerr << "problème close" << std::endl;
-	else
-		std::cout << "end close " << std::endl;
-	exit(0);
- */}
+}
 
 int	Slave::connectServer(t_masterinfo &data)
 {
@@ -63,7 +43,7 @@ Slave::~Slave()
 {
 }
 
-void timer(char *is_finished)
+void timer(char *is_finished, int socket)
 {
 	time_t this_time;
 	time_t last_time;
@@ -71,9 +51,13 @@ void timer(char *is_finished)
 	last_time = this_time;
 	while (true) {
 		time(&this_time);
+		if (is_finished[0] == 'y') {
+			last_time = this_time;
+			is_finished[0] = 'n';
+		}
 		if (difftime(this_time, last_time) > 5.0f) {
 			is_finished[0] = 'y';
-			std::cout << "5 sc\n";
+			close(socket);
 			return ;
 		}
 	}
@@ -93,28 +77,22 @@ void	Slave::run()
 	char str[2];
 	str[0] = 'n';
 	str[1] = '\0';
-	std::thread thread(timer, str);
+	std::thread thread(timer, str, _client.getSocket());
 	while (1) {
 		if (_working) {
-			//		_timer->setCheck(false);
+			str[0] = 'y';
 			for (;infos.vect_info.size() > 0;) {
 				threads.newInstruction(&infos, 0);
 				work[0] = 1;
 				while (threads.finishWork() == false)
 					handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
-//				_timer->setCheck(true);
-				//s_statu = "check true";
 				threads.emptyVec();
 				_working = false;
 				infos.vect_info.erase(infos.vect_info.begin());
 			}
 		} else {
-			std::cout << "else " << str << std::endl;
 			if (str[0] == 'y') {
-				if (close(_client.getSocket()) == -1)
-					std::cerr << "problème close" << std::endl;
-				else
-					std::cout << "end close " << std::endl;
+				close(_client.getSocket());
 				exit(0); 
 			}
 			work[0] = 0;
@@ -123,6 +101,9 @@ void	Slave::run()
 			handleSocket.intRecv(_client.getSocket(), &infos, sizeof(infos), 0);
 			_working = true;
 		}
-		std::cout << "lopp" << str << std::endl;
+		if (str[0] == 'y') {
+			close(_client.getSocket());
+			exit(0);
+		}
 	}
 }
