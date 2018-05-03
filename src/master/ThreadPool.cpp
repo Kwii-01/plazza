@@ -92,5 +92,5 @@ ThreadPool::~ThreadPool()
 		thread->join();
 	//	delete(thread);
 //	}
-	threads.clear();
+//	threads.clear();
 }
