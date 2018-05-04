@@ -63,11 +63,11 @@ void Parsefiles::parse_regex(Information information, std::vector<std::string> &
 		if (current - 1 < from || current - 1 > to)
 			continue ;
 		if (information == PHONE_NUMBER)
-			substr = "(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}";
+			substr = "([0-9][0-9]\\s?){4}[0-9][0-9]";
 		else if (information == EMAIL_ADDRESS)
-			substr = "(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+";
+			substr = "[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+";
 		else if (information == IP_ADDRESS)
-			substr = "[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}";
+			substr = "((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]?[0-9])";
 		std::regex words_regex(substr.c_str());
 		auto words_begin =
 			std::sregex_iterator(line.begin(), line.end(), words_regex);
