@@ -92,6 +92,26 @@ void	SlaveManager::CreateSlave(s_cmdinfo info, t_masterinfo masterinfo)
 	}
 }
 
+void	SlaveManager::WaitFinishWork()
+{
+	int	stop = 1;
+	IntSocket	iSock;
+	int		i[1];
+
+	while (stop) {
+		stop = 0;
+		for (auto &elem : _clients) {
+			if (elem.working) {
+				iSock.intRecv(elem.fd, i, sizeof(int), 0);
+				if (i[0] == 0)
+					elem.working = false;
+				else
+					stop = 1;
+			}
+		}
+	}
+}
+
 void	SlaveManager::DeleteSlave()
 {
 

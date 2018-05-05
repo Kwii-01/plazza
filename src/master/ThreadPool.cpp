@@ -78,15 +78,17 @@ bool	ThreadPool::finishWork()
 	bool	exist = true;
 
 	for (int i = 0; i < _nbrMaxThreads; ++i) {
-		if (_action[i] == "work")
+		if (_action[i] == "work") {
+			mutex->unlock();
 			exist = false;
+		}
 	}
 	return exist;
 }
 
 ThreadPool::~ThreadPool()
 {
-	std::cout << "oyui" << std::endl;
+	mutex->unlock();
 	_state = "finish";
  	for (auto &thread : threads)// {
 		thread->join();

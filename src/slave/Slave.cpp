@@ -77,7 +77,7 @@ void	Slave::run()
 	char str[2];
 	str[0] = 'n';
 	str[1] = '\0';
-	std::thread thread(timer, str, _client.getSocket());
+	std::thread thread(timer, str, getpid());
 	while (1) {
 		if (_working) {
 			str[0] = 'y';
@@ -98,7 +98,11 @@ void	Slave::run()
 			work[0] = 0;
 			handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
 			handleSocket.intSend(_client.getSocket(), work, sizeof(int), 0);
-			handleSocket.intRecv(_client.getSocket(), &infos, sizeof(infos), 0);
+			if (str[0] == 'y') {
+                                close(_client.getSocket());
+                                exit(0);
+                        }
+			//handleSocket.intRecv(_client.getSocket(), &infos, sizeof(infos), 0);
 			_working = true;
 		}
 		if (str[0] == 'y') {

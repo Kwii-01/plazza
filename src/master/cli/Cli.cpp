@@ -8,7 +8,6 @@
 #include <thread>
 #include <iostream>
 #include "Parser.hpp"
-#include "SlaveManager.hpp"
 #include "Cli.hpp"
 
 void	Cli::mainLoop(t_masterinfo &data)
@@ -17,7 +16,7 @@ void	Cli::mainLoop(t_masterinfo &data)
 	std::vector<s_cmdinfo *>	cmds;
 
 	while (serv_g._status != -1) {
-		cmds = getCmd();
+		cmds = getCmd(slv);
 		updateCmd(cmds, data);
 		slv.Interpret(cmds, data);
 	}
@@ -43,14 +42,15 @@ void	Cli::updateCmd(std::vector<s_cmdinfo *> &cmd, t_masterinfo &data)
 	}
 }
 
-std::vector<s_cmdinfo *>	Cli::getCmd()
+std::vector<s_cmdinfo *>	Cli::getCmd(SlaveManager &slv)
 {
 	Parser		pars;
 	std::string	s;
 
 	getline(std::cin, s);
 	if (s == "") {
-		std::this_thread::sleep_for(std::chrono::milliseconds(300));
+		slv.WaitFinishWork();
+	//	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 		exit(0);
 	}
 	return pars.run(s);

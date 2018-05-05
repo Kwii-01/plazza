@@ -16,6 +16,7 @@ class SlaveManager {
 	public:
 		SlaveManager(t_masterinfo masterinfo, int gui) : _masterinfo(masterinfo), _gui(gui) {}
 		void	Interpret(std::vector<s_cmdinfo *> &, t_masterinfo &);
+		void	WaitFinishWork();
 	private:
 		void	create_window();
 		int	checkFreeToWork();
